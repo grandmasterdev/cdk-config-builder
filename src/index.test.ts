@@ -1,43 +1,53 @@
-import Config from "./index";
-import cut from "./index";
+import Config from './index';
+import cut from './index';
+import { mocked } from 'jest-mock';
+import { Construct } from 'constructs';
 
-const mockedCdkContextString = JSON.stringify({
-  dev: {
-    AccountAlias: "aws-account-alias",
-    Application: "random-app",
-  },
-});
+jest.mock('constructs');
 
-type MockCdkConfig = {
-  AccountAlias: string;
-  Application: string;
+const mockedConstruct = {
+  node: {
+    tryGetContext: jest.fn(() => {
+      return JSON.stringify({
+        dev: {
+          AccountAlias: 'aws-account-alias',
+          Application: 'random-app',
+        },
+      });
+    })
+  }
 };
 
-describe("AWS CDK builder tests", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+type MockCdkConfig = {
+	AccountAlias: string;
+	Application: string;
+};
 
-  it("should return instance of AwsCdkConfigBuilder", () => {
-    expect(cut.getInstance(mockedCdkContextString)).toBeInstanceOf(Config);
-  });
+describe('AWS CDK builder tests', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
 
-  it("should return configuration object of MockCdkConfig", () => {
-    const result = cut
-      .getInstance(mockedCdkContextString)
-      .build<MockCdkConfig>("dev");
+	it('should return instance of AwsCdkConfigBuilder', () => {
+		expect(cut.getInstance(mockedConstruct as any)).toBeInstanceOf(Config);
+	});
 
-    expect(result).toStrictEqual({
-      AccountAlias: "aws-account-alias",
-      Application: "random-app",
-    });
-  });
+	it('should return configuration object of MockCdkConfig', () => {
+		const result = cut
+			.getInstance(mockedConstruct as any)
+			.build<MockCdkConfig>('dev');
 
-  it('should return empty object when "env" passed not in the context', () => {
-    const result = cut
-      .getInstance(mockedCdkContextString)
-      .build<MockCdkConfig>("none");
+		expect(result).toStrictEqual({
+			AccountAlias: 'aws-account-alias',
+			Application: 'random-app',
+		});
+	});
 
-    expect(result).toStrictEqual({});
-  });
+	it('should return empty object when "env" passed not in the context', () => {
+		const result = cut
+			.getInstance(mockedConstruct as any)
+			.build<MockCdkConfig>('none');
+
+		expect(result).toStrictEqual({});
+	});
 });

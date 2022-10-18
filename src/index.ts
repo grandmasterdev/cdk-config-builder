@@ -1,52 +1,56 @@
+import { Construct } from 'constructs';
+
 export default class Config {
-    private static instance: Config;
+	private static instance: Config;
 
-    private context: string = '';
+    private construct: Construct | undefined = undefined;
 
-    /**
-     * 
-     * @param context 
-     * @returns Singleton instance
-     */
-    public static getInstance(context: string) {
-        if(!Config.instance) {
-            Config.instance = new Config();
-            
-            Config.instance.context = context;
-        }
+	/**
+	 *
+	 * @param context
+	 * @returns Singleton instance
+	 */
+	public static getInstance(scope: Construct) {
+		if (!Config.instance) {
+			Config.instance = new Config();
 
-        return Config.instance;
-    }
+			Config.instance.construct = scope;
+		}
 
-    /**
-     * Build config object from desired environment
-     * @param env 
-     * @returns AWS CDK configuration object of T
-     */
-    public build<T>(env: string): T | {} {
-        if(!env) {
-            throw new Error(`[build] Missing "env" in argument`);
-        }
+		return Config.instance;
+	}
 
-        if(!this.context) {
-            throw new Error(`[build] instance has no context value`);
-        }
+	/**
+	 * Build config object from desired environment
+	 * @param env
+	 * @returns AWS CDK configuration object of T
+	 */
+	public build<T>(env: string): T | {} {
+		if (!env) {
+			throw new Error(`[build] Missing "env" in argument`);
+		}
 
-        const obj = this.tryParseJson<T>(this.context);
+		if (!this.construct) {
+			throw new Error(`[build] instance has no construct object`);
+		}
 
-        return obj[env as keyof typeof obj] as T ?? {};
-    }
+        const configurationStr = this.construct.node.tryGetContext(env);
 
-    /**
-     * Try parse JSON string to object
-     * @param str 
-     * @returns JSON object of type T or {}
-     */
-    private tryParseJson<T>(str: string): T | {} {
-        try {
-            return JSON.parse(str);
-        } catch(ex) {
-            return {}
-        }
-    }
+		const obj = this.tryParseJson<T>(configurationStr);
+
+		return (obj[env as keyof typeof obj] as T) ?? {};
+	}
+
+	/**
+	 * Try parse JSON string to object
+	 * @param str
+	 * @returns JSON object of type T or {}
+	 */
+	private tryParseJson<T>(str: string): T | {} {
+		try {
+			return JSON.parse(str);
+		} catch (ex) {
+			return {};
+		}
+	}
 }

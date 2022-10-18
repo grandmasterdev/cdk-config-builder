@@ -1,5 +1,6 @@
 src
 .husky
+coverage
 
 tsconfig.json
 jest.config.js
