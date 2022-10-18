@@ -42,9 +42,8 @@ Your `context` file content should be in format like the following...
 
 import configration from 'aws-cdk-config-builder';
 
-const configContext = this.node.tryGetContext('config');
-
-const config = configuration.Config(configContext).build('dev');
+// this is the cdk construct scope
+const config = configuration.Config(this).build('dev');
 
 ```
 
@@ -52,7 +51,8 @@ const config = configuration.Config(configContext).build('dev');
 
 ```typescript
 
-const config = configuration.Config(configContext).build<ConfigType>('dev');
+// this is the cdk construct scope
+const config = configuration.Config(this).build<ConfigType>('dev');
 
 type ConfigType = {
     AccountAlias: string;
