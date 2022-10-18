@@ -48,6 +48,10 @@ export default class Config {
 	 */
 	private tryParseJson<T>(str: string): T | {} {
 		try {
+			if(typeof str === "object") {
+				return str;
+			}
+			
 			return JSON.parse(str);
 		} catch (ex) {
 			return {};
