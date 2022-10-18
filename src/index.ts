@@ -37,8 +37,9 @@ export default class Config {
         const configurationStr = this.construct.node.tryGetContext(env);
 
 		const obj = this.tryParseJson<T>(configurationStr);
+		console.log('tryParseJson output', obj);
 
-		return (obj[env as keyof typeof obj] as T) ?? {};
+		return (obj as T) ?? {};
 	}
 
 	/**
@@ -51,9 +52,10 @@ export default class Config {
 			if(typeof str === "object") {
 				return str;
 			}
-			
+
 			return JSON.parse(str);
 		} catch (ex) {
+			console.log('try parse issue', (ex as Error).message);
 			return {};
 		}
 	}

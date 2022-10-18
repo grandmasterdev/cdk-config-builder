@@ -1,21 +1,17 @@
 import Config from './index';
 import cut from './index';
-import { mocked } from 'jest-mock';
-import { Construct } from 'constructs';
 
 jest.mock('constructs');
 
 const mockedConstruct = {
-  node: {
-    tryGetContext: jest.fn(() => {
-      return JSON.stringify({
-        dev: {
-          AccountAlias: 'aws-account-alias',
-          Application: 'random-app',
-        },
-      });
-    })
-  }
+	node: {
+		tryGetContext: jest.fn(() => {
+			return JSON.stringify({
+				AccountAlias: 'aws-account-alias',
+				Application: 'random-app',
+			});
+		}),
+	},
 };
 
 type MockCdkConfig = {
@@ -41,13 +37,5 @@ describe('AWS CDK builder tests', () => {
 			AccountAlias: 'aws-account-alias',
 			Application: 'random-app',
 		});
-	});
-
-	it('should return empty object when "env" passed not in the context', () => {
-		const result = cut
-			.getInstance(mockedConstruct as any)
-			.build<MockCdkConfig>('none');
-
-		expect(result).toStrictEqual({});
 	});
 });
