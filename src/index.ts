@@ -37,7 +37,6 @@ export default class Config {
         const configurationStr = this.construct.node.tryGetContext(env);
 
 		const obj = this.tryParseJson<T>(configurationStr);
-		console.log('tryParseJson output', obj);
 
 		return (obj as T) ?? {};
 	}
