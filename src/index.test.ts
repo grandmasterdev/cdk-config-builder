@@ -5,11 +5,18 @@ jest.mock('constructs');
 
 const mockedConstruct = {
 	node: {
-		tryGetContext: jest.fn(() => {
-			return JSON.stringify({
-				AccountAlias: 'aws-account-alias',
-				Application: 'random-app',
-			});
+		tryGetContext: jest.fn((env: string) => {
+			if(env === 'dev') {
+				return JSON.stringify({
+					AccountAlias: 'aws-account-alias',
+					Application: 'random-app',
+				});
+			}
+			if(env === 'default') {
+				return JSON.stringify({
+					SharedProps: 'all should have me'
+				});
+			}
 		}),
 	},
 };
@@ -36,6 +43,7 @@ describe('AWS CDK builder tests', () => {
 		expect(result).toStrictEqual({
 			AccountAlias: 'aws-account-alias',
 			Application: 'random-app',
+			SharedProps: 'all should have me'
 		});
 	});
 });

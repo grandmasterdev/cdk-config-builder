@@ -37,9 +37,8 @@ export default class Config {
         const configurationStr = this.construct.node.tryGetContext(env);
 
 		const obj = this.tryParseJson<T>(configurationStr);
-		console.log('tryParseJson output', obj);
 
-		return (obj as T) ?? {};
+		return this.combineEnvConfigWithBase(obj) as T ?? {};
 	}
 
 	/**
@@ -57,6 +56,22 @@ export default class Config {
 		} catch (ex) {
 			console.log('try parse issue', (ex as Error).message);
 			return {};
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private combineEnvConfigWithBase<T>(envConfig: T) {
+		const baseConfig = this.construct?.node.tryGetContext('default');
+
+		if(!baseConfig) {
+			return envConfig;
+		}
+
+		return {
+			...this.tryParseJson<T>(baseConfig),
+			...envConfig
 		}
 	}
 }
