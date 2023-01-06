@@ -1,0 +1,29 @@
+# This workflow is to build and test the project as part of the continuous integration
+# NodeJs
+
+name: NodeJs CI
+
+on: 
+  push:
+    branches: ['master']
+
+jobs: 
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      working-dir: .
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: build and test
+        run: |
+          node -v
+          npm -v
+          npm ci
+          npm run build
+          npm run test
+
