@@ -4,7 +4,7 @@
 	"description": "Helper library to build AWS CDK configs",
 	"main": "dist/index.js",
 	"scripts": {
-		"test": "jest",
+		"test": "jest --collectCoverage",
 		"format": "prettier --write",
 		"lint": "eslint --fix",
 		"build": "esbuild src/index.ts --bundle --minify --platform=node --outfile=dist/index.js && npm run emitDeclaration",
