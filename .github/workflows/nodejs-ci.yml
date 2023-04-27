@@ -20,10 +20,6 @@ jobs:
           node-version: '16'
 
       - name: build and test
-        run: |
-          node -v
-          npm -v
-          npm ci
-          npm run build
-          npm run test
-
+        uses: grandmasterdev/github-action-ci-nodejs-build-test@master
+        with:
+          working-dir: ${{github.workspace}}
