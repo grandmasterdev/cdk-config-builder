@@ -12,7 +12,7 @@ const mockedConstruct = {
 					Application: 'random-app',
 				});
 			}
-			if(env === 'default') {
+			if(env === '_') {
 				return JSON.stringify({
 					SharedProps: 'all should have me'
 				});

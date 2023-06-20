@@ -63,7 +63,7 @@ export default class Config {
 	 * 
 	 */
 	private combineEnvConfigWithBase<T>(envConfig: T) {
-		const baseConfig = this.construct?.node.tryGetContext('default');
+		const baseConfig = this.construct?.node.tryGetContext('_');
 
 		if(!baseConfig) {
 			return envConfig;

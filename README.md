@@ -58,11 +58,11 @@ type ConfigType = {
 ### 3. Configuration inheritance
 
 If you have a common properties with the same values across different environments, you may use
-`default` object as follows:
+`_` object as follows:
 
 ```json
 {
-	"default": {
+	"_": {
 		"lambda": {
 			"memorySize": 128
 		}
@@ -90,11 +90,11 @@ The above will return the following value as configuration when `environment` is
 
 #### 3.1 Overriding 
 
-The `environment` properties may override the `default` simply by doing the following...
+The `environment` properties may override the `_` simply by doing the following...
 
 ```json
 {
-	"default": {
+	"_": {
 		"lambda": {
 			"memorySize": 128
 		}
