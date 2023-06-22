@@ -1,4 +1,4 @@
-# AWS CDK CONFIG BUILDER
+# CDK CONFIG BUILDER
 
 A tool to help build and extract configuration for different environments/accounts which come from AWS CDK `context`.
 
