@@ -1,6 +1,6 @@
 {
 	"name": "cdk-config-builder",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Helper library to build AWS CDK configs",
 	"scope": "aws-cdk-tools",
 	"main": "dist/index.js",
